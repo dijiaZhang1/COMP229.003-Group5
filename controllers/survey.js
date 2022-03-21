@@ -39,7 +39,7 @@ module.exports.displayAddPage = (req, res, next) => {
     res.render(
         'survey/add_edit', 
         {
-            title: 'Add a new survey',
+            title: 'Create a new survey',
             //userId:req.user ? req.user.username : '',
             survey: newItem
         }
@@ -77,7 +77,7 @@ module.exports.processAddPage = (req, res, next) => {
         }
         else
         {
-            // refresh the book list
+            // refresh the survey list
             //console.log(survey);
             res.redirect('/survey/list');
         }
@@ -237,55 +237,6 @@ module.exports.processQuestionsPage = (req, res, next) => {
     });
 }
 
-/*
-module.exports.displaySurveyViewPage = (req, res, next) => {
-    let id = req.params.id;
-
-    Survey.findById(id, (err, surveyToSubmit) => {
-        if(err)
-        {
-            console.log(err);
-            res.end(err);
-        }
-        else
-        {
-            //show the view page
-            res.render('survey/survey-questions', 
-            {title: surveyToSubmit.title, 
-            survey: surveyToSubmit,
-            userId:req.user ? req.user.username : ''
-           })
-        }
-    });
-}
-
-module.exports.processSurveyViewPage = (req, res, next) => {
-    let id = req.params.id
-
-    let answer = [];
-    answer.push(req.body.a0);
-    answer.push(req.body.a1);
-    answer.push(req.body.a2);
-    answer.push(req.body.a3);
-    answer.push(req.body.a4);
-    let newSurveySubmit = SurveySubmit({
-        "surveyId": id,
-        "answer": answer
-    });
-
-    SurveySubmit.create(newSurveySubmit, (err, SurveySubmit) =>{
-        if(err)
-        {
-            console.log(err);
-            res.end(err);
-        }
-        else
-        {
-            res.redirect('/survey/list');
-        }
-    });
-}
-*/
 module.exports.displayReportViewPage = (req, res, next) => {
     
     let id = req.params.id;

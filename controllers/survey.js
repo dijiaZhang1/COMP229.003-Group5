@@ -3,7 +3,7 @@
 let Survey = require('../models/survey');
 
 // create a reference to the survey submit model
-let SurveySubmit = require('../models/surveysubmit');
+let SurveyAnswer = require('../models/surveyAnswer');
 
 // Gets all surveyss from the Database and renders the page to list all surveyss.
 module.exports.displaySurveyList = function(req, res, next) {  
@@ -117,7 +117,7 @@ module.exports.displayEditPage = (req, res, next) => {
 // Processes the data submitted from the Edit form to update a survey
 module.exports.processEditPage = (req, res, next) => {
     
-    // ADD YOUR CODE HERE
+    
     let id = req.params.id
 
     let question = [];
@@ -169,7 +169,7 @@ module.exports.performDelete = (req, res, next) => {
         else
         {
             
-            SurveySubmit.remove({"surveyId": id}, (err) => {
+            SurveyAnswer.remove({"surveyId": id}, (err) => {
                 if(err)
                 {
                     console.log(err);
@@ -187,9 +187,7 @@ module.exports.performDelete = (req, res, next) => {
 }
 
 
-
-//Display Survey Detail page
-// Gets a survey by id and renders the survey details page.
+// Gets a survey by id and renders the fill survey page.
 module.exports.displayQuestionsPage = (req, res, next) => {
     
     let id = req.params.id;
@@ -204,7 +202,7 @@ module.exports.displayQuestionsPage = (req, res, next) => {
         {
             //show the survey view page
             res.render('survey/survey-questions', {
-                title: 'Survey Questions', 
+                title: 'Fill Survey', 
                 survey: surveyToSubmit,
                 //userId:req.user ? req.user.username : ''
             })
@@ -213,28 +211,43 @@ module.exports.displayQuestionsPage = (req, res, next) => {
 }
 
 
-
+//Process the fill survey operation
 module.exports.processQuestionsPage = (req, res, next) => {
     let id = req.params.id
     let answer = [];
     answer.push([req.body.a0, req.body.a1, req.body.a2, req.body.a3, req.body.a4])
+    
 
-    let newSurveySubmit = SurveySubmit({
-        "surveyId": id,
-        "answer": answer
-    });
-
-    SurveySubmit.create(newSurveySubmit, (err, SurveySubmit) =>{
+    Survey.findById(id, (err, surveyToSubmit) =>{
         if(err)
         {
             console.log(err);
             res.end(err);
         }
-        else
-        {
-            res.redirect('/survey/list');
-        }
-    });
+        else{
+            if(surveyToSubmit){
+
+                let fillNewSurvey = SurveyAnswer({
+                    "surveyId": id,
+                    "answer": answer
+                });
+
+                SurveyAnswer.create(fillNewSurvey, (err, SurveyAnswer) => {
+                    if(err)
+                    {
+                        console.log(err);
+                        res.end(err);
+                    }
+                    else
+                    {
+                        //refresh the survey list
+                        res.redirect('/survey/list');
+                    }
+                });
+
+            }
+        } 
+    }); 
 }
 
 module.exports.displayReportViewPage = (req, res, next) => {
@@ -250,7 +263,7 @@ module.exports.displayReportViewPage = (req, res, next) => {
         else
         {
             
-            SurveySubmit.find({"surveyId" : id}, (err, docs) => {  
+            SurveyAnswer.find({"surveyId" : id}, (err, docs) => {  
 
                 let trueAnswer = [0,0,0,0,0];
                 let falseAnswer = [0,0,0,0,0];

@@ -228,8 +228,9 @@ module.exports.processQuestionsPage = (req, res, next) => {
             if(surveyToSubmit){
 
                 let fillNewSurvey = SurveyAnswer({
-                    "surveyId": id,
-                    "answer": answer
+                    surveyId: id,
+                    //userName: String,
+                    answer: answer
                 });
 
                 SurveyAnswer.create(fillNewSurvey, (err, SurveyAnswer) => {
@@ -316,7 +317,7 @@ module.exports.displayReportViewPage = (req, res, next) => {
                         votes: docs.length,
                         trueAnswer: trueAnswer,
                         falseAnswer: falseAnswer,
-                        userId:req.user ? req.user.username : ''
+                        //userId:req.user ? req.user.username : ''
                     });
                 }
                 if ( survey.type == "Scale" ) {
@@ -332,7 +333,7 @@ module.exports.displayReportViewPage = (req, res, next) => {
                         good: good,
                         veryGood: veryGood,
                         excellent: excellent,
-                        userId:req.user ? req.user.username : ''
+                        //userId:req.user ? req.user.username : ''
                     });
                 }
             });   

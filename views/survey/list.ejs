@@ -1,0 +1,68 @@
+<%- include ../partials/header.ejs %>
+
+  <!-- Main Content -->
+  <main class="container">
+    <div class="row">
+        <h1><%= title %></h1>
+        <br>
+        <div>
+            <!-- ------------------------ -->
+            <!-- the ADD button below -->
+            <!-- ------------------------ -->
+            <a href="/survey/add" class="btn btn-primary align-self-end" role="button">
+                <i class="fas fa-plus-circle"></i> 
+                Add a new survey
+            </a>                
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover">
+                <!-- Header Row-->
+                <tr>
+                    <th class="text-center">Title</th>
+                    <th class="text-center">Start Date</th>
+                    <th class="text-center">End Date</th>      
+                    <th class="text-center">Survey Results</th>                
+                    <th class="text-center" colspan="2">Actions</th>
+                </tr>
+
+                <!-- Repeatable Template Row -->
+
+                <% for(let count = 0; count < surveys.length; count++) { %>
+                    <tr>
+                        <td class="text-center">
+                            <a href="/survey/survey-questions/<%= surveys[count]._id %>">
+                                <%= surveys[count].title %>
+                            </a>
+                        </td>
+                        <td class="text-center"><%= surveys[count].startdate.toLocaleDateString(); %></td>
+                        <td class="text-center"><%= surveys[count].enddate.toLocaleDateString(); %></td>
+                        
+                        <td class="text-center">
+                            <a href="/survey/report/<%= surveys[count]._id %>">
+                                survey result
+                            </a>
+                        </td>
+                        
+                        
+                        <td class="text-center">
+                            <!-- ------------------------- -->
+                            <!-- the EDIT button below -->
+                            <!-- ------------------------ -->
+                            <a href="/survey/edit/<%= surveys[count]._id %>" class="btn btn-primary btn-sm">
+                            <i class="fas fa-pencil-alt"></i></a>
+                        </td>
+                        <td class="text-center">
+                            <!-- --------------------------- -->
+                            <!-- the DELETE button below -->
+                            <!-- --------------------------- -->
+                            <a href="/survey/delete/<%= surveys[count]._id %>" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash-alt"></i></a>
+                        </td>
+                    </tr>
+                <% } %>
+            </table>
+        </div>
+    </div>
+  </main>
+<%- include ../partials/footer.ejs %>

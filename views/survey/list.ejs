@@ -32,7 +32,7 @@
                     <tr>
                         <td class="text-center">
                             <a href="/survey/survey-questions/<%= surveys[count]._id %>">
-                                <%= surveys[count].title %>
+                                <strong><%= surveys[count].title %></strong>
                             </a>
                         </td>
                         <td class="text-center"><%= surveys[count].startdate.toLocaleDateString(); %></td>
@@ -40,7 +40,7 @@
                         
                         <td class="text-center">
                             <a href="/survey/report/<%= surveys[count]._id %>">
-                                survey result
+                                view survey result
                             </a>
                         </td>
                         

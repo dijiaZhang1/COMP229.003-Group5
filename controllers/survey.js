@@ -62,7 +62,7 @@ module.exports.processAddPage = (req, res, next) => {
     let newItem = Survey({
         _id: req.body.id,
         title: req.body.title,
-        type: req.body.surveytype,
+        type: req.body.type,
         username: req.body.username,
         startdate: req.body.startdate,
         enddate: req.body.enddate,
@@ -130,7 +130,7 @@ module.exports.processEditPage = (req, res, next) => {
     let updatedItem = Survey({
         _id: req.body.id,
         title: req.body.title,
-        type: req.body.surveytype,
+        type: req.body.type,
         username: req.body.username,
         startdate: req.body.startdate,
         enddate: req.body.enddate,

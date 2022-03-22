@@ -1,4 +1,8 @@
 
+let express = require('express');
+let router = express.Router();
+let mongoose = require('mongoose');
+
 // create a reference to the model
 let Survey = require('../models/survey');
 
@@ -168,19 +172,10 @@ module.exports.performDelete = (req, res, next) => {
         }
         else
         {
+            // refresh the contact list
+            res.redirect('/survey/list');
+                
             
-            SurveyAnswer.remove({"surveyId": id}, (err) => {
-                if(err)
-                {
-                    console.log(err);
-                    res.end(err);
-                }
-                else
-                {
-                     // refresh the contact list
-                     res.redirect('/survey/list');
-                }
-            });
         }
     });
 
@@ -213,10 +208,14 @@ module.exports.displayQuestionsPage = (req, res, next) => {
 
 //Process the fill survey operation
 module.exports.processQuestionsPage = (req, res, next) => {
-    let id = req.params.id
+    let id = req.params.id;
     let answer = [];
-    answer.push([req.body.a0, req.body.a1, req.body.a2, req.body.a3, req.body.a4])
-    
+    answer.push(req.body.a1);
+    answer.push(req.body.a2);
+    answer.push(req.body.a3);
+    answer.push(req.body.a4);
+    answer.push(req.body.a5);
+
 
     Survey.findById(id, (err, surveyToSubmit) =>{
         if(err)
@@ -265,14 +264,17 @@ module.exports.displayReportViewPage = (req, res, next) => {
         {
             
             SurveyAnswer.find({"surveyId" : id}, (err, docs) => {  
-
+                //True or False
                 let trueAnswer = [0,0,0,0,0];
                 let falseAnswer = [0,0,0,0,0];
+                //Scale
                 let veryBad = [0,0,0,0,0];
                 let bad = [0,0,0,0,0];
                 let good = [0,0,0,0,0];
                 let veryGood = [0,0,0,0,0];
                 let excellent = [0,0,0,0,0];
+                //Short Answer 
+                let textAnswer=[0,0,0,0,0]
 
                 for (j=0; j < docs.length; j++) {
                     
@@ -307,6 +309,10 @@ module.exports.displayReportViewPage = (req, res, next) => {
                             }
 
                         }
+
+                        if ( survey.type == "ShortAnswer" ) {
+                            textAnswer[i]=docs[j].answer[i]
+                        }
                     }
                 }
                 if ( survey.type == "True/False" ) {
@@ -333,6 +339,18 @@ module.exports.displayReportViewPage = (req, res, next) => {
                         good: good,
                         veryGood: veryGood,
                         excellent: excellent,
+                        //userId:req.user ? req.user.username : ''
+                    });
+                }
+
+                if ( survey.type == "ShortAnswer" ) {
+                    
+                    res.render('survey/report', 
+                    {
+                        title: survey.title,
+                        survey: survey,
+                        votes: docs.length,
+                        textAnswer: textAnswer
                         //userId:req.user ? req.user.username : ''
                     });
                 }

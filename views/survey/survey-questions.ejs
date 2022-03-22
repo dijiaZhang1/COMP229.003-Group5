@@ -18,7 +18,7 @@
                 
                   <% if ( survey.type == "True/False") { %>
                   <div class="col-6">
-                  <div class="card-body" style="border-radius: 15px 50px; background-color: rgb(33, 173, 33);">
+                  <div class="card-body" style="border-radius: 15px; background-color: rgb(162, 211, 162);">
                     <div class="row justify-content-around">
                       <div class="col-2" style="margin-left: 100px">
                         <div class="form-check form-check-inline">
@@ -37,10 +37,24 @@
                   </div>
                   <% } %>
 
+                  <% if ( survey.type == "ShortAnswer") { %>
+                    <div class="form-group">
+                        <input type="text" class="form-control"
+                            id="text-<%= i %>"
+                            placeholder="Enter your answer"
+                            name="a<%= i %>"
+                            
+                            required>
+                    </div>
+                  
+                    
+                    
+                  <% } %>
+
                   <% if ( survey.type == "Scale") { %>
                     <% let scale = ['very bad','bad', 'good', 'very good', 'excellent'] %>
                       <div class="form-check">
-                      <div class="card-body" style="border-radius: 15px 50px; background-color: rgb(13, 148, 13);" >
+                      <div class="card-body" style="border-radius: 15px; background-color: rgb(162, 211, 162);" >
                         <div style="margin-bottom: 50px; margin-top: 35px;" class="row justify-content-left">
                           <div class="col">
                             <label style="color: black;" for="range<%= i %> -1" class="form-label">Very Bad</label>

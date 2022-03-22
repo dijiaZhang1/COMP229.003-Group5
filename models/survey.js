@@ -1,6 +1,5 @@
 
 
-//const { ObjectId } = require('mongodb');
 let mongoose = require('mongoose');
 
 // create a model class for survey document

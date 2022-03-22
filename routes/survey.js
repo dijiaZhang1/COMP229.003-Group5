@@ -23,7 +23,7 @@ router.get('/delete/:id', surveyController.performDelete);
 router.get('/survey-questions/:id', surveyController.displayQuestionsPage);
 
 //Router for handling/submitting survey anwsers
-router.get('/survey-questions/:id', surveyController.processQuestionsPage);
+router.post('/survey-questions/:id', surveyController.processQuestionsPage);
 
 // Router for display survey report 
 router.get('/report/:id', surveyController.displayReportViewPage);

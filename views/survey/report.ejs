@@ -14,6 +14,7 @@
                     <th class="text-center col-6">Question</th>
                     <th class="text-center col-2">True</th>
                     <th class="text-center col-2">False</th>
+                    
                   <% } %>
                   <% if ( survey.type == "Scale" ) { %>
                      <th class="text-center col-6">Question</th>
@@ -30,12 +31,13 @@
                   <% for (i=0; i < survey.question.length; i++ ) { %>
                     <tr>
                       <% if ( survey.type == "True/False" ) { %>
-                        <td class="text-center col-6" ><%= survey.question[i] %></td>
+                        <td class="text-left col-6" > Q<%= i %><%= survey.question[i] %></td>
                         <td class="text-center col-2"><%= trueAnswer[i] %></td>
                         <td class="text-center col-2"><%= falseAnswer[i] %></td>
+
                       <% } %> 
                        <% if ( survey.type == "Scale" ) { %>
-                        <td class="text-center col-6"><%= survey.question[i] %></td>
+                        <td class="text-left col-6"><%= survey.question[i] %></td>
                         <td class="text-center col-1"><%= veryBad[i] %></td>
                         <td class="text-center col-1"><%= bad[i] %></td>
                         <td class="text-center col-1"><%= good[i] %></td>

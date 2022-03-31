@@ -108,13 +108,15 @@ module.exports.displayEditPage = (req, res, next) => {
         }
         else
         {
+            console.log(session.email);
             //show the edit view
             res.render(
                 'survey/add_edit', 
                 {
                     title: 'Edit Survey', 
                     survey: itemToEdit,
-                    //userId:req.user ? req.user.username : ''
+                    isLog:session.email
+                    
                 }
             )
         }
@@ -166,22 +168,22 @@ module.exports.processEditPage = (req, res, next) => {
 module.exports.performDelete = (req, res, next) => {
     
     
+    if(!session.email){
+        res.redirect('/log');
+    }
+    
+    else{
     let id = req.params.id;
-
-    Survey.remove({_id: id}, (err) => {
-        if(err)
-        {
-            console.log(err);
-            res.end(err);
-        }
-        else
-        {
-            // refresh the contact list
-            res.redirect('/survey/list');
-                
-            
-        }
+    
+    Survey.deleteOne({_id: id}).then(function(){
+        console.log("Data deleted"); // Success
+        res.redirect('/survey/list');
+    }).catch(function(error){
+        console.log(error);
+        res.redirect('/survey/list'); // Failure
     });
+    }
+}
 
 }
 
@@ -203,7 +205,8 @@ module.exports.displayQuestionsPage = (req, res, next) => {
             res.render('survey/survey-questions', {
                 title: 'Fill Survey', 
                 survey: surveyToSubmit,
-                //userId:req.user ? req.user.username : ''
+                isLog:session.email
+                
             })
         }
     });
@@ -245,7 +248,7 @@ module.exports.processQuestionsPage = (req, res, next) => {
                     else
                     {
                         //refresh the survey list
-                        res.redirect('/survey/list');
+                        res.redirect('/survey/list', {isLog:session.email});
                     }
                 });
 
@@ -271,12 +274,14 @@ module.exports.displayReportViewPage = (req, res, next) => {
                 //True or False
                 let trueAnswer = [0,0,0,0,0];
                 let falseAnswer = [0,0,0,0,0];
+                
                 //Scale
                 let veryBad = [0,0,0,0,0];
                 let bad = [0,0,0,0,0];
                 let good = [0,0,0,0,0];
                 let veryGood = [0,0,0,0,0];
                 let excellent = [0,0,0,0,0];
+                
                 //Short Answer 
                 let textAnswer=[0,0,0,0,0]
 
@@ -326,8 +331,9 @@ module.exports.displayReportViewPage = (req, res, next) => {
                         survey: survey,
                         votes: docs.length,
                         trueAnswer: trueAnswer,
-                        falseAnswer: falseAnswer,
-                        //userId:req.user ? req.user.username : ''
+                        falseAnswer: falseAnswer, 
+                        isLog:session.email
+
                     });
                 }
                 if ( survey.type == "Scale" ) {
@@ -343,7 +349,8 @@ module.exports.displayReportViewPage = (req, res, next) => {
                         good: good,
                         veryGood: veryGood,
                         excellent: excellent,
-                        //userId:req.user ? req.user.username : ''
+                        isLog:session.email
+
                     });
                 }
 
@@ -354,8 +361,8 @@ module.exports.displayReportViewPage = (req, res, next) => {
                         title: survey.title,
                         survey: survey,
                         votes: docs.length,
-                        textAnswer: textAnswer
-                        //userId:req.user ? req.user.username : ''
+                        textAnswer: textAnswer,
+                        isLog:session.email
                     });
                 }
             });   

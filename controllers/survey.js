@@ -2,6 +2,7 @@
 let express = require('express');
 let router = express.Router();
 let mongoose = require('mongoose');
+const { session } = require('passport');
 
 // create a reference to the model
 let Survey = require('../models/survey');
@@ -9,7 +10,7 @@ let Survey = require('../models/survey');
 // create a reference to the survey submit model
 let SurveyAnswer = require('../models/surveyAnswer');
 
-// Gets all surveyss from the Database and renders the page to list all surveyss.
+// Gets all surveys from the Database and renders the page to list all surveys.
 module.exports.displaySurveyList = function(req, res, next) {  
     Survey.find((err, surveyList) => {
         // console.log(displaySurveyList);
@@ -24,8 +25,8 @@ module.exports.displaySurveyList = function(req, res, next) {
             res.render('survey/list', 
             {title: 'Surveys', 
             surveys: surveyList,
-            //userId:req.user ? req.user.username : '',
-            today: currentDate
+            today: currentDate,
+            isLog:session.email
    
         }
         );      
@@ -37,15 +38,14 @@ module.exports.displaySurveyList = function(req, res, next) {
 // Renders the Add form using the add_edit.ejs template
 module.exports.displayAddPage = (req, res, next) => {
     
-    // ADD YOUR CODE HERE 
     let newItem = Survey();
 
     res.render(
         'survey/add_edit', 
         {
             title: 'Create a new survey',
-            //userId:req.user ? req.user.username : '',
-            survey: newItem
+            survey: newItem,
+            isLog:session.email
         }
     )                 
 
@@ -95,6 +95,10 @@ module.exports.displayEditPage = (req, res, next) => {
     
     
     let id = req.params.id;
+
+    if(!session.email){
+        res.redirect('/log');
+    }
 
     Survey.findById(id, (err, itemToEdit) => {
         if(err)

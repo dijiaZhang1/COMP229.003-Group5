@@ -4,6 +4,14 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 
+var session = require('express-session');
+
+var app = express();
+app.use(session({secret: "Shh, its a secret!",resave: true,
+saveUninitialized: true
+}));
+
+
 //Database setup
 let mongoose = require('mongoose');
 let dbURI = require('./db');
@@ -21,7 +29,7 @@ mongoDB.once('open', ()=>{
 let indexRouter = require('../routes/index');
 let surveyRouter = require('../routes/survey');
 
-let app = express();
+//let app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, '../views'));
@@ -38,9 +46,9 @@ app.use('/', indexRouter);
 app.use('/survey', surveyRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+//app.use(function(req, res, next) {
+//  next(createError(404));
+//});
 
 // error handler
 app.use(function(err, req, res, next) {

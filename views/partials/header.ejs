@@ -14,7 +14,7 @@
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="https://supersurvey005.herokuapp.com/images/image_logo.JPG" alt="logo" style="width:40px;">
+        <img src="/images/image_logo.JPG" alt="logo" style="width:40px;">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
         <span class="navbar-toggler-icon"></span>
@@ -45,7 +45,25 @@
                 <li><a class="dropdown-item" href="/survey/list">Survey List</a></li>
                 <li><a class="dropdown-item" href="/survey/add">Create a new Survey</a></li>
               </ul>
-            </li>            
+            </li>   
+            
+            <li class="nav-item float-right">
+              <% if (isLog !== "") { %>
+                  <a class="nav-link active float-right" href="/logout">
+                    <i class="fas fa-user"></i> Logout </a>
+                  </a>
+                </li> 
+              <% } else { %>
+                <a class="nav-link active float-right" href="/log">
+                  <i class="fas fa-user"></i> Login </a>
+                </a>
+              </li>
+                  <a class="nav-link active float-right" href="/reg">
+                    <i class="fas fa-user"></i> Register </a>
+                  </a>
+                </li>
+              <% } %>            
+                  
           </ul>
         </div>
       </div>

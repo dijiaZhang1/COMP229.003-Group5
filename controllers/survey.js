@@ -185,7 +185,6 @@ module.exports.performDelete = (req, res, next) => {
     }
 }
 
-}
 
 
 // Gets a survey by id and renders the fill survey page.

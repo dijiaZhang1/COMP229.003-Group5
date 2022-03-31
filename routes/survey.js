@@ -4,7 +4,7 @@ let mongoose = require('mongoose');
 
 let surveyController = require('../controllers/survey');
 
-// Router for lists movies function
+// Router for lists function
 router.get('/list', surveyController.displaySurveyList);
 
 // Routers for Add functions
@@ -17,7 +17,6 @@ router.post('/edit/:id', surveyController.processEditPage);
 
 // Router for Delete function
 router.get('/delete/:id', surveyController.performDelete);
-
 
 // Router for display survey question details 
 router.get('/survey-questions/:id', surveyController.displayQuestionsPage);

@@ -1,8 +1,8 @@
 
-let express = require('express');
-let router = express.Router();
-let mongoose = require('mongoose');
-const { session } = require('passport');
+// let express = require('express');
+// let router = express.Router();
+// let mongoose = require('mongoose');
+// const { session } = require('passport');
 
 // create a reference to the model
 let Survey = require('../models/survey');
@@ -10,51 +10,70 @@ let Survey = require('../models/survey');
 // create a reference to the survey submit model
 let SurveyAnswer = require('../models/surveyAnswer');
 
+function getErrorMessage(err) {
+    if (err.errors) {
+        for (let errName in err.errors) {
+            if (err.errors[errName].message) return err.errors[errName].message;
+        }
+    } else {
+        return 'Unknown server error';
+    }
+};
+
 // Gets all surveys from the Database and renders the page to list all surveys.
 module.exports.displaySurveyList = function(req, res, next) {  
     Survey.find((err, surveyList) => {
         // console.log(displaySurveyList);
         if(err)
         {
-            return console.error(err);
+            console.error(err);
+            return res.status(400).json(
+                { 
+                  success: false, 
+                  message: getErrorMessage(err)
+                }
+              );
         }
         else
         {
-            // Get current day
-            let currentDate = new Date()
-            res.render('survey/list', 
-            {title: 'Surveys', 
-            surveys: surveyList,
-            today: currentDate,
-            isLog:session.email
+            // // Get current day
+            // let currentDate = new Date()
+            // res.render('survey/list', 
+            // {title: 'Surveys', 
+            // surveys: surveyList,
+            // today: currentDate,
+            // userName: req.user ? req.user.username : '' 
+            
+            res.status(200).json(surveyList);
    
         }
-        );      
-    }
-});
+    });
 }
+
    
 
 // Renders the Add form using the add_edit.ejs template
-module.exports.displayAddPage = (req, res, next) => {
+// module.exports.displayAddPage = (req, res, next) => {
     
-    let newItem = Survey();
+//     let newItem = Survey();
 
-    res.render(
-        'survey/add_edit', 
-        {
-            title: 'Create a new survey',
-            survey: newItem,
-            isLog:session.email
-        }
-    )                 
+//     res.render(
+//         'survey/add_edit', 
+//         {
+//             title: 'Create a new survey',
+//             survey: newItem,
+//             userName: req.user ? req.user.username : '' 
+//             
+//         }
+//     )                 
 
-}
+// }
 
 // Processes the data submitted from the Add form to create a new survey
 module.exports.processAddPage = (req, res, next) => {
+    
 
-    let currentDate = new Date()
+    //let currentDate = new Date()
 
     let question = [];
     question.push(req.body.q1);
@@ -63,8 +82,10 @@ module.exports.processAddPage = (req, res, next) => {
     question.push(req.body.q4);
     question.push(req.body.q5);
 
+    console.log(req.body);
+
     let newItem = Survey({
-        _id: req.body.id,
+        //_id: req.body.id,
         title: req.body.title,
         type: req.body.type,
         username: req.body.username,
@@ -77,13 +98,20 @@ module.exports.processAddPage = (req, res, next) => {
         if(err)
         {
             console.log(err);
-            res.end(err);
+            //res.end(err);
+            return res.status(400).json(
+                { 
+                  success: false, 
+                  message: getErrorMessage(err)
+                }
+            );
         }
         else
         {
             // refresh the survey list
-            //console.log(survey);
-            res.redirect('/survey/list');
+            console.log(Survey);
+            //res.redirect('/survey/list');
+            res.status(200).json(Survey);
         }
     });
 
@@ -91,42 +119,42 @@ module.exports.processAddPage = (req, res, next) => {
 }
 
 // Gets a survey by id and renders the Edit form using the add_edit.ejs template
-module.exports.displayEditPage = (req, res, next) => {
+// module.exports.displayEditPage = (req, res, next) => {
     
     
-    let id = req.params.id;
+//     let id = req.params.id;
 
-    if(!session.email){
-        res.redirect('/log');
-    }
+//     if(!session.email){
+//         res.redirect('/log');
+//     }
 
-    Survey.findById(id, (err, itemToEdit) => {
-        if(err)
-        {
-            console.log(err);
-            res.end(err);
-        }
-        else
-        {
-            console.log(session.email);
-            //show the edit view
-            res.render(
-                'survey/add_edit', 
-                {
-                    title: 'Edit Survey', 
-                    survey: itemToEdit,
-                    isLog:session.email
+//     Survey.findById(id, (err, itemToEdit) => {
+//         if(err)
+//         {
+//             console.log(err);
+//             res.end(err);
+//         }
+//         else
+//         {
+//             console.log(session.email);
+//             //show the edit view
+//             res.render(
+//                 'survey/add_edit', 
+//                 {
+//                     title: 'Edit Survey', 
+//                     survey: itemToEdit,
+//                     isLog:session.email
                     
-                }
-            )
-        }
-    });
+//                 }
+//             )
+//         }
+//     });
 
-}
+// }
 
 // Processes the data submitted from the Edit form to update a survey
 module.exports.processEditPage = (req, res, next) => {
-    
+    console.log("req.user ==>", req.user);
     
     let id = req.params.id
 
@@ -138,7 +166,7 @@ module.exports.processEditPage = (req, res, next) => {
     question.push(req.body.q5);
 
     let updatedItem = Survey({
-        _id: req.body.id,
+        _id: id,
         title: req.body.title,
         type: req.body.type,
         username: req.body.username,
@@ -153,12 +181,24 @@ module.exports.processEditPage = (req, res, next) => {
         if(err)
         {
             console.log(err);
-            res.end(err);
+            //res.end(err);
+            return res.status(400).json(
+                { 
+                  success: false, 
+                  message: getErrorMessage(err)
+                }
+            );
         }
         else
         {
             // refresh the book list
-            res.redirect('/survey/list');
+            //res.redirect('/survey/list');
+            return res.status(200).json(
+                { 
+                  success: true, 
+                  message: 'Item updated successfully.'
+                }
+            );
         }
     });
     
@@ -166,54 +206,60 @@ module.exports.processEditPage = (req, res, next) => {
 
 // Deletes a survey based on its id.
 module.exports.performDelete = (req, res, next) => {
-    
-    
-    if(!session.email){
-        res.redirect('/log');
-    }
-    
-    else{
     let id = req.params.id;
-    
-    Survey.deleteOne({_id: id}).then(function(){
-        console.log("Data deleted"); // Success
-        res.redirect('/survey/list');
-    }).catch(function(error){
-        console.log(error);
-        res.redirect('/survey/list'); // Failure
+
+    Survey.remove({_id: id}, (err) => {
+        if(err)
+        {
+            console.log(err);
+            // res.end(err);
+            return res.status(400).send({
+                success: false,
+                message: getErrorMessage(err)
+            });
+        }
+        else
+        {
+            // refresh the book list
+            // res.redirect('/survey/list');
+            return res.status(200).json({
+                success: true,
+                message: "Item removed successfully."
+            });
+        }
     });
-    }
 }
 
 
 
 // Gets a survey by id and renders the fill survey page.
-module.exports.displayQuestionsPage = (req, res, next) => {
+// module.exports.displayQuestionsPage = (req, res, next) => {
     
-    let id = req.params.id;
+//     let id = req.params.id;
 
-    Survey.findById(id, (err, surveyToSubmit) => {
-        if(err)
-        {
-            console.log(err);
-            res.end(err);
-        }
-        else
-        {
-            //show the survey view page
-            res.render('survey/survey-questions', {
-                title: 'Fill Survey', 
-                survey: surveyToSubmit,
-                isLog:session.email
+//     Survey.findById(id, (err, surveyToSubmit) => {
+//         if(err)
+//         {
+//             console.log(err);
+//             res.end(err);
+//         }
+//         else
+//         {
+//             //show the survey view page
+//             res.render('survey/survey-questions', {
+//                 title: 'Fill Survey', 
+//                 survey: surveyToSubmit,
+//                 isLog:session.email
                 
-            })
-        }
-    });
-}
+//             })
+//         }
+//     });
+// }
 
 
 //Process the fill survey operation
 module.exports.processQuestionsPage = (req, res, next) => {
+    console.log(req.body);
     let id = req.params.id;
     let answer = [];
     answer.push(req.body.a1);
@@ -227,7 +273,7 @@ module.exports.processQuestionsPage = (req, res, next) => {
         if(err)
         {
             console.log(err);
-            res.end(err);
+            //res.end(err);
         }
         else{
             if(surveyToSubmit){
@@ -242,12 +288,19 @@ module.exports.processQuestionsPage = (req, res, next) => {
                     if(err)
                     {
                         console.log(err);
-                        res.end(err);
+                        //res.end(err);
+                        return res.status(400).json(
+                            { 
+                              success: false, 
+                              message: getErrorMessage(err)
+                            }
+                        );
                     }
                     else
-                    {
+                    {   console.log(SurveyAnswer);
                         //refresh the survey list
-                        res.redirect('/survey/list', {isLog:session.email});
+                        //res.redirect('/survey/list', {isLog:session.email});
+                        res.status(200).json(SurveyAnswer);
                     }
                 });
 
@@ -256,6 +309,7 @@ module.exports.processQuestionsPage = (req, res, next) => {
     }); 
 }
 
+/*
 module.exports.displayReportViewPage = (req, res, next) => {
     
     let id = req.params.id;
@@ -369,5 +423,5 @@ module.exports.displayReportViewPage = (req, res, next) => {
     });
 }
 
-
+*/
 

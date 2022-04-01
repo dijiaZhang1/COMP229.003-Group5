@@ -11,10 +11,10 @@ let compression = require('compression');
 
 //Get route module
 let indexRouter = require('../routes/index');
-let usersRouter = require('../routes/index');
+let usersRouter = require('../routes/users');
 let surveyRouter = require('../routes/survey');
 
-var app = express();
+let app = express();
 
 app.use(compression());
 

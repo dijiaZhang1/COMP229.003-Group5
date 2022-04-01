@@ -5,10 +5,10 @@
  */
 
 var dbConfig = require('./config/db');
-var app = require('./config/app');
+var appConfig = require('./config/app');
 var debug = require('debug')('COMP229.003-Group5:server');
 var http = require('http');
-var passportConfig = require('./config/passport');
+var passportConfig = require('./config/local');
 
 /**
  * Get port from environment and store in Express.
@@ -16,13 +16,13 @@ var passportConfig = require('./config/passport');
 
 let db = dbConfig();
 var port = normalizePort(process.env.PORT || '5003');
-app.set('port', port);
+appConfig.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+var server = http.createServer(appConfig);
 
 /**
  * Listen on provided port, on all network interfaces.

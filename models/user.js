@@ -1,21 +1,27 @@
 let mongoose = require('mongoose');
 let crypto = require('crypto');
 
-// create a model class for survey document
-let userModel = mongoose.Schema(
+// Create a model class
+let UserSchema = mongoose.Schema(
     {
         firstName: String,
         lastName: String,
         email: {
-            type:String,
-            match: [/.+\@.+\..+/, "Please fill a valid email address"]
+            type: String,
+            match: [/.+\@.+\..+/, "Please fill a valid e-mail address"]
+        },
+        username: {
+            type: String,
+            unique: true,
+            required: 'Username is required',
+            trim: true
         },
         password: {
-            type:String,
+            type: String,
             validate: [(password) => {
                 return password && password.length > 6;
             }, 'Password should be longer']
-        },   
+        },
         salt: String,
         created: {
             type: Date,
@@ -23,7 +29,7 @@ let userModel = mongoose.Schema(
         }
     },
     {
-        collection: "users"
+        collection: "user"
     }
 );
 
@@ -59,4 +65,4 @@ UserSchema.methods.authenticate = function(password) {
     return this.password === this.hashPassword(password);
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('user', UserSchema);

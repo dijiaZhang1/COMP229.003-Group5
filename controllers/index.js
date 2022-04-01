@@ -1,17 +1,27 @@
-let express = require('express');
-let router = express.Router();
-let mongoose = require('mongoose');
-const { session } = require('passport');
+exports.home = function(req, res, next) {
+    
+    res.redirect('/survey/list');
+}
 
 
+//module.exports.home = function(req, res, next) {
+//    console.log(session.email);
+//    res.render('index', { title: 'Home', isLog:session.email});
+//};
+
+
+/*
 // create a reference to the model
+let mongoose = require('mongoose');
 let User = require('../models/user');
+let passport = require('passport');
+
+let jwt = require('jsonwebtoken');
+
+let config = require('../config/config');
 
 
-module.exports.home = function(req, res, next) {
-    console.log(session.email);
-    res.render('index', { title: 'Home', isLog:session.email});
-};
+
 
 module.exports.login = function(req, res, next) {
     res.render('user/login', { title: 'Login', isLog:""});
@@ -64,4 +74,4 @@ module.exports.logout = function(req,res,next){
        });
 }
 
-
+*/

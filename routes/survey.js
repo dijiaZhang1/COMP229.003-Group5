@@ -13,7 +13,7 @@ router.post('/add', surveyController.processAddPage);
 
 // Routers for edit functions
 router.get('/edit/:id', surveyController.displayEditPage);
-router.post('/edit/:id', surveyController.processEditPage);
+router.put('/edit/:id', surveyController.processEditPage);
 
 // Router for Delete function
 router.get('/delete/:id', surveyController.performDelete);

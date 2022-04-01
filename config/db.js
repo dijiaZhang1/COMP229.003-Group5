@@ -1,6 +1,6 @@
 
 //For production enviorment never expose your connection string. 
-let URI = "mongodb+srv://dbadmin:ui4o3LzFPMVK8EuU@clusters003.wvfaf.mongodb.net/mydb?retryWrites=true&w=majority"
+let URI = require('./config').ATLASDB;
 
 //Database setup
 let mongoose = require('mongoose');

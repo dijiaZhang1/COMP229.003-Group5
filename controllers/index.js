@@ -23,7 +23,8 @@ module.exports.reg = function(req, res, next) {
 
 module.exports.register = function(req, res, next) {
     let newItem = User({
-        name:req.body.name,
+        FirstName:req.body.name,
+        LastName:req.body.name,
         password:req.body.password,
         email:req.body.email
     });

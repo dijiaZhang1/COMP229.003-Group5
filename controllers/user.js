@@ -43,8 +43,8 @@ function getErrorMessage(err) {
       // creates a empty new user object.
       let newUser = User();
   
-      res.render('auth/signup', {
-        title: 'Sign-up Form',
+      res.render('user/reg', {
+        title: 'Registration',
         messages: req.flash('error'),
         user: newUser
       });
@@ -69,8 +69,8 @@ module.exports.signup = function(req, res, next) {
   
           req.flash('error', message);
           // return res.redirect('/users/signup');
-          return res.render('auth/signup', {
-            title: 'Sign-up Form',
+          return res.render('user/reg', {
+            title: 'Registration Form',
             messages: req.flash('error'),
             user: user
           });
@@ -88,7 +88,7 @@ module.exports.signup = function(req, res, next) {
 
   module.exports.renderSignin = function(req, res, next) {
     if (!req.user) {
-      res.render('auth/signin', {
+      res.render('user/login', {
         title: 'Sign-in Form',
         messages: req.flash('error') || req.flash('info')
       });
@@ -102,7 +102,7 @@ module.exports.signup = function(req, res, next) {
 module.exports.signin = function(req, res, next){
     passport.authenticate('local', {   
       successRedirect: req.session.url || '/',
-      failureRedirect: '/users/signin',
+      failureRedirect: '/user/login',
       failureFlash: true
     })(req, res, next);
     delete req.session.url;
@@ -112,4 +112,4 @@ module.exports.signin = function(req, res, next){
   module.exports.signout = function(req, res, next) {
     req.logout();
     res.redirect('/');
-  };
+  }; 

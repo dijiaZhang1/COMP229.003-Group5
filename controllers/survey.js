@@ -75,12 +75,12 @@ module.exports.processAddPage = (req, res, next) => {
 
     //let currentDate = new Date()
 
-    let question = [];
-    question.push(req.body.q1);
-    question.push(req.body.q2);
-    question.push(req.body.q3);
-    question.push(req.body.q4);
-    question.push(req.body.q5);
+    // let question = [];
+    // question.push(req.body.q1);
+    // question.push(req.body.q2);
+    // question.push(req.body.q3);
+    // question.push(req.body.q4);
+    // question.push(req.body.q5);
 
     console.log(req.body);
 
@@ -91,7 +91,7 @@ module.exports.processAddPage = (req, res, next) => {
         username: req.body.username,
         startdate: req.body.startdate,
         enddate: req.body.enddate,
-        question: question
+        question: [req.body.q1,req.body.q2, req.body.q3, req.body.q4, req.body.q5]
     });
 
     Survey.create(newItem, (err, Survey) =>{
@@ -158,12 +158,12 @@ module.exports.processEditPage = (req, res, next) => {
     
     let id = req.params.id
 
-    let question = [];
-    question.push(req.body.q1);
-    question.push(req.body.q2);
-    question.push(req.body.q3);
-    question.push(req.body.q4);
-    question.push(req.body.q5);
+    // let question = [];
+    // question.push(req.body.q1);
+    // question.push(req.body.q2);
+    // question.push(req.body.q3);
+    // question.push(req.body.q4);
+    // question.push(req.body.q5);
 
     let updatedItem = Survey({
         _id: id,
@@ -172,7 +172,7 @@ module.exports.processEditPage = (req, res, next) => {
         username: req.body.username,
         startdate: req.body.startdate,
         enddate: req.body.enddate,
-        question: question
+        question: [req.body.q1,req.body.q2, req.body.q3, req.body.q4, req.body.q5]
     });
 
     // console.log(updatedItem);

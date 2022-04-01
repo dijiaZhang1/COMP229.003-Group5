@@ -3,33 +3,24 @@ let express = require('express');
 let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
-
-var session = require('express-session');
-
-var app = express();
-app.use(session({secret: "Shh, its a secret!",resave: true,
-saveUninitialized: true
-}));
+let session = require('express-session');
+let flash = require('connect-flash');
+let passport = require('passport');
 
 
-//Database setup
-let mongoose = require('mongoose');
-let dbURI = require('./db');
-
-// Connect to the Database
-mongoose.connect(dbURI.AtlasDB);
-
-let mongoDB = mongoose.connection;
-mongoDB.on('error', console.error.bind(console, 'Connection Error:'));
-mongoDB.once('open', ()=>{
-  console.log('Connected to MongoDB...');
-});
-
-// Get route modules
+//Get route module
 let indexRouter = require('../routes/index');
+let usersRouter = require('../routes/index');
 let surveyRouter = require('../routes/survey');
 
-//let app = express();
+var app = express();
+
+app.use(session({
+  secret: "Shh, its a secret!",
+  resave: true,
+  saveUninitialized: true
+}));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, '../views'));
@@ -42,13 +33,19 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.static(path.join(__dirname, '../node_modules')));
 
+// Sets up passport
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use('/', indexRouter);
+app.use('/users', usersRouter);
 app.use('/survey', surveyRouter);
 
 // catch 404 and forward to error handler
-//app.use(function(req, res, next) {
-//  next(createError(404));
-//});
+app.use(function(req, res, next) {
+  next(createError(404));
+});
 
 // error handler
 app.use(function(err, req, res, next) {

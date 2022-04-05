@@ -79,6 +79,7 @@ module.exports.processAdd = (req, res, next) => {
 
     try {
         
+        /*
         let currentDate = new Date()
 
         let question = [];
@@ -87,7 +88,7 @@ module.exports.processAdd = (req, res, next) => {
         question.push(req.body.q3);
         question.push(req.body.q4);
         question.push(req.body.q5);
-
+        */
 
         let newItem = Survey({
             //_id: req.body.id,
@@ -96,7 +97,7 @@ module.exports.processAdd = (req, res, next) => {
             username: req.body.username,
             startdate: req.body.startdate,
             enddate: req.body.enddate,
-            question: question
+            question: req.body.question
         });
 
         Survey.create(newItem, (err, Survey) =>{
@@ -171,13 +172,14 @@ module.exports.processEdit = (req, res, next) => {
     try {
         let id = req.params.id
 
+        /*
         let question = [];
         question.push(req.body.q1);
         question.push(req.body.q2);
         question.push(req.body.q3);
         question.push(req.body.q4);
         question.push(req.body.q5);
-
+        */
         let updatedItem = Survey({
             _id: id,
             title: req.body.title,
@@ -185,7 +187,7 @@ module.exports.processEdit = (req, res, next) => {
             username: req.body.username,
             startdate: req.body.startdate,
             enddate: req.body.enddate,
-            question: question
+            question: req.body.question
         });
 
         // console.log(updatedItem);

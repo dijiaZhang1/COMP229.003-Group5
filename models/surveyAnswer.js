@@ -6,7 +6,7 @@ let mongoose = require('mongoose');
 let surveyAnswerModel = mongoose.Schema({
     surveyId:String,
     //userName: String,
-    answer: Array 
+    answer: [String]
 },
 {
     collection: "surveyAnswer"

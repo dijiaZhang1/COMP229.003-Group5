@@ -9,7 +9,7 @@ let surveyModel = mongoose.Schema({
     startdate: Date,
     enddate: Date,
     username: String,
-    question: Array
+    question: [String]
 },
 {
     collection: "surveys"

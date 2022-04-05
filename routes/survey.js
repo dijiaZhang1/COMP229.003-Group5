@@ -54,10 +54,10 @@ router.put('/edit/:id', surveyController.processEdit);
 router.delete('/delete/:id', requireAuth, surveyController.performDelete);
 
 // Router for display survey question details 
-//router.get('/survey-questions/:id', surveyController.displayQuestionsPage);
+//router.get('/fill/:id', surveyController.displayQuestionsPage);
 
 //Router for handling/submitting survey anwsers
-router.post('/survey-questions/:id', surveyController.processFillSurveyPage);
+router.post('/fill/:id', surveyController.processFillSurveyPage);
 
 // Router for display survey report 
 //router.get('/report/:id', surveyController.displayReportViewPage);

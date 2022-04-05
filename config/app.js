@@ -1,3 +1,4 @@
+let cors = require('cors');
 let createError = require('http-errors');
 let express = require('express');
 //let path = require('path');
@@ -15,6 +16,10 @@ let usersRouter = require('../routes/users');
 let surveyRouter = require('../routes/survey');
 
 let app = express();
+
+// Enables cors.
+app.use(cors());
+app.options('*', cors());
 
 app.use(compression());
 

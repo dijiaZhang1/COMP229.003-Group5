@@ -39,15 +39,16 @@ function requireAuth(req, res, next)
 
 
 // Router for lists function
-router.get('/list', surveyController.displaySurveyList);
+router.get('/list', surveyController.list);
 
 // Routers for Add functions
 //router.get('/add', surveyController.displayAddPage);
-router.post('/add', surveyController.processAddPage);
+router.post('/add', surveyController.processAdd);
 
 // Routers for edit functions
 //router.get('/edit/:id', surveyController.displayEditPage);
-router.put('/edit/:id', passport.authenticate('tokencheck', { session: false }), surveyController.processEditPage);
+//router.put('/edit/:id', passport.authenticate('tokencheck', { session: false }), surveyController.processEditPage);
+router.put('/edit/:id', surveyController.processEdit);
 
 // Router for Delete function
 router.delete('/delete/:id', requireAuth, surveyController.performDelete);
@@ -56,7 +57,7 @@ router.delete('/delete/:id', requireAuth, surveyController.performDelete);
 //router.get('/survey-questions/:id', surveyController.displayQuestionsPage);
 
 //Router for handling/submitting survey anwsers
-router.post('/survey-questions/:id', surveyController.processQuestionsPage);
+router.post('/survey-questions/:id', surveyController.processFillSurveyPage);
 
 // Router for display survey report 
 //router.get('/report/:id', surveyController.displayReportViewPage);

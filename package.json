@@ -2,7 +2,6 @@
   "name": "survey",
   "version": "1.0.0",
   "private": true,
-  
   "scripts": {
     "start": "node server.js"
   },
@@ -19,18 +18,13 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0"
   },
-  
   "description": "COMP229.003-Group5",
   "main": "server.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dijiaZhang1/COMP229.003-Group5"
   },
-  "keywords": [
-    "Group5",
-    "Express",
-    "EJS"
-  ],
+  
   "author": "Group 5",
   "license": "MIT",
   "bugs": {

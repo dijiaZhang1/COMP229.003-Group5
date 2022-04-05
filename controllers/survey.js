@@ -97,7 +97,7 @@ module.exports.processAdd = (req, res, next) => {
             username: req.body.username,
             startdate: req.body.startdate,
             enddate: req.body.enddate,
-            question: req.body.question
+            question: [req.body.q1,req.body.q2, req.body.q3, req.body.q4, req.body.q5]
         });
 
         Survey.create(newItem, (err, Survey) =>{
